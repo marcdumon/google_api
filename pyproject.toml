@@ -1,0 +1,34 @@
+[project]
+name = 'google-api'
+version = '0.1.0'
+description = 'Google APIs for my own apps: the login and the token, and the Google Health data.'
+readme = 'README.md'
+authors = [{ name = 'Marc Dumon', email = '7793950+marcdumon@users.noreply.github.com' }]
+requires-python = '>=3.13'
+dependencies = [
+    "google-auth>=2.62.0",
+    "requests>=2.34.2",
+]
+
+[build-system]
+requires = ['uv_build>=0.12.3,<0.13.0']
+build-backend = 'uv_build'
+
+[tool.pytest.ini_options]
+testpaths = ['tests']
+addopts = '-q --tb=short'
+
+[tool.ruff]
+line-length = 135
+
+[tool.ruff.lint]
+select = ['E', 'F', 'I', 'B', 'UP', 'SIM', 'RUF']
+
+[tool.ruff.format]
+quote-style = 'single'
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.2",
+]
