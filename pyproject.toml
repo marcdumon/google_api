@@ -1,12 +1,14 @@
 [project]
 name = 'google-api'
 version = '0.1.0'
-description = 'Google APIs for my own apps: the login and the token, and the Google Health data.'
+description = 'Google APIs for my own apps: the login and the token, Calendar, Gmail and the Google Health data.'
 readme = 'README.md'
 authors = [{ name = 'Marc Dumon', email = '7793950+marcdumon@users.noreply.github.com' }]
 requires-python = '>=3.13'
 dependencies = [
+    "google-api-python-client>=2.201.0",
     "google-auth>=2.62.0",
+    "google-auth-oauthlib>=1.5.0",
     "requests>=2.34.2",
 ]
 
