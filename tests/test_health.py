@@ -163,3 +163,14 @@ def test_the_saved_files_become_rows_without_duplicates(tmp_path: Path) -> None:
     assert [(r['type'], r['start'], r['field']) for r in rows] == [('heart-rate', '2026-10-23T13:32:55Z', 'beatsPerMinute'),
                                                                    ('total-calories', '2026-10-23T12:35:00Z', 'kcalSum')]
     assert list(rows[0]) == list(health.COLUMNS)
+
+
+def test_the_rows_of_one_day_come_only_from_the_files_of_that_day(tmp_path: Path) -> None:
+    for day in ('2026-10-23', '2026-10-24'):
+        (tmp_path / 'heart-rate').mkdir(exist_ok=True)
+        point = HR_POINT | {'heartRate': HR_POINT['heartRate'] | {'beatsPerMinute': '60' if day == '2026-10-23' else '80'}}
+        (tmp_path / 'heart-rate' / f'{day}.json').write_text(json.dumps({'pages': [{'dataPoints': [point]}]}))
+    (tmp_path / 'exercise').mkdir()
+    (tmp_path / 'exercise' / 'all.json').write_text(json.dumps({'pages': [{'dataPoints': [STEPS_POINT]}]}))
+    assert [r['value'] for r in health.rows(tmp_path, date(2026, 10, 24))] == [80.0]
+    assert len(health.rows(tmp_path)) == 3

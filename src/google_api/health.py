@@ -194,10 +194,11 @@ def point_rows(kind: str, points: list[dict]) -> list[dict]:
     return found
 
 
-def rows(folder: Path) -> list[dict]:
-    """The rows of all files saved in `folder` (see COLUMNS), without the duplicates that overlapping files give."""
+def rows(folder: Path, day: date | None = None) -> list[dict]:
+    """The rows of all files saved in `folder` (see COLUMNS), without the duplicates that overlapping files give. With a
+    day, only the files of that local day: its samples and intervals, its daily values and the sleeps that end on it."""
     found = []
-    for path in sorted(folder.glob('*/*.json')):
+    for path in sorted(folder.glob(f'*/{day or "*"}.json')):
         for page in json.loads(path.read_text())['pages']:
             found += point_rows(path.parent.name, page.get('dataPoints', []) + page.get('rollupDataPoints', []))
     return [dict(row) for row in dict.fromkeys(tuple(row.items()) for row in found)]
